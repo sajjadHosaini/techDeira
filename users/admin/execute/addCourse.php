@@ -1,0 +1,30 @@
+<?php
+session_start();
+require '../../../execute/auth.php';
+include '../../../inc/config.inc';
+
+$link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
+if(!$link) {
+	die('Failed to connect to server: ' . mysql_error());
+}
+//Select database
+$db = mysql_select_db(DB_DATABASE);
+if(!$db) {
+	die("Unable to select database");
+}
+$fee = $_GET['courseFee'] . " " . $_GET['currency'];
+$dateFrom = $_GET['dateFrom'];
+$dateTo = $_GET['dateTo'];
+echo $_SESSION['USER_ID'];
+if(isset($_GET['submit'])){
+	$addcourse = mysql_query("INSERT INTO courses VALUES (null,'".$_GET['courseTitle']."','".$_GET['desc']."','".$fee."','$dateFrom','$dateTo','".$_GET['timeFrom']."','".$_GET['timeTo']."','".$_GET['courseCategory']."','".$_GET['instructor']."','".$_GET['status']."')");
+	if($addcourse){
+		header("Location:../courses.php?addCourse=success");
+	}
+	else{
+		echo mysql_error();
+	}
+}
+else{
+	header("Location: ../courses.php");
+}

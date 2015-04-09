@@ -1,0 +1,780 @@
+<?php
+require '../../execute/auth.php';
+include '../../inc/config.inc';
+
+$link = mysql_connect ( DB_HOST, DB_USER, DB_PASSWORD );
+if (! $link) {
+	die ( 'Failed to connect to server: ' . mysql_error () );
+}
+
+// Select database
+$db = mysql_select_db ( DB_DATABASE );
+if (! $db) {
+	die ( "Unable to select database" );
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- start: Meta -->
+<meta charset="utf-8">
+<title>Dashboard | TechDeira</title>
+<!-- end: Meta -->
+
+<!-- start: Mobile Specific -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- end: Mobile Specific -->
+
+<!-- start: CSS -->
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.0.1-p7/css/bootstrap.min.css">
+
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="../assets/css/style.min.css" rel="stylesheet">
+<link href="../assets/css/jquery.timepicker.css" rel="stylesheet">
+<link href="../assets/css/retina.min.css" rel="stylesheet">
+<link
+	href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
+	rel="stylesheet">
+<!-- end: CSS -->
+
+
+<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+	
+	  	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="../assets/js/respond.min.js"></script>
+		<script src="../assets/css/ie6-8.css"></script>
+		
+	<![endif]-->
+
+<!-- start: Favicon and Touch Icons -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144"
+	href="../assets/ico/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114"
+	href="../assets/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72"
+	href="../assets/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="57x57"
+	href="../assets/ico/apple-touch-icon-57-precomposed.png">
+<link rel="shortcut icon" href="../assets/ico/favicon.png">
+<!-- end: Favicon and Touch Icons -->
+
+
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css"
+	href="../assets/css/jquery.timepicker.css">
+
+
+</head>
+
+<body>
+	<!-- start: Header -->
+	<header class="navbar">
+		<div class="container">
+			<button class="navbar-toggle" type="button" data-toggle="collapse"
+				data-target=".sidebar-nav.nav-collapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a id="main-menu-toggle" class="hidden-xs open"><i class="fa fa-bars"></i>
+			</a> <a href="#" class="col-lg-2 col-sm-1 col-xs-12 logo_image"
+				id="gopage-top"><span style="color: #0088CC;">TECH</span><span
+				style="color: #E86537">DEIRA</span> </a>
+			<!-- start: Header Menu -->
+			<div class="nav-no-collapse header-nav">
+				<ul class="nav navbar-nav pull-right">
+					</a>
+					</li>
+					<?php
+					$userselect = mysql_query ( "SELECT * FROM users WHERE id = '" . $_SESSION ['USER_ID'] . "'" );
+					$userrow = mysql_fetch_array ( $userselect );
+
+					?>
+					<!-- start: User Dropdown -->
+					<li class="dropdown"><a class="btn account dropdown-toggle"
+						data-toggle="dropdown" href="index.html#">
+							<div class="avatar">
+								<img src="../assets/img/avatar.jpg" alt="Avatar">
+							</div>
+							<div class="user">
+								<span class="hello">Welcome!</span> <span class="name"><?php echo $userrow['firstname'] . " " . $userrow['lastname']; ?>
+								</span>
+							</div> </a>
+						<ul class="dropdown-menu">
+							<li class="dropdown-menu-title"></li>
+							<li><a href="profile.php"><i class="fa fa-user"></i> Profile</a>
+							</li>
+							<li><a href="../../execute/logout.php"><i class="fa fa-sign-out"></i>
+									Logout</a></li>
+						</ul></li>
+					<!-- end: User Dropdown -->
+				</ul>
+			</div>
+			<!-- end: Header Menu -->
+
+		</div>
+	</header>
+	<!-- end: Header -->
+
+	<div class="container">
+		<div class="row">
+
+			<!-- start: Main Menu -->
+			<div id="sidebar-left" class="col-lg-2 col-sm-1">
+				<div
+					class="nav-collapse sidebar-nav collapse navbar-collapse bs-navbar-collapse">
+					<ul class="nav nav-tabs nav-stacked main-menu">
+						<li><a href="index.php"><i class="fa fa-bar-chart-o"></i><span
+								class="hidden-sm"> Dashboard</span> </a></li>
+						<li><a href="courses.php"><i class="fa fa-laptop"></i><span
+								class="hidden-sm"> Courses</span> </a></li>
+						<li><a href="profile.php"><i class=" fa fa-user fa-lg"></i><span
+								class="hidden-sm"> Profile</span> </a></li>
+						<li>
+					
+					</ul>
+				</div>
+			</div>
+			<div id="content" class="col-lg-10 col-sm-11">
+				<h1>Edit Profile</h1>
+				<hr>
+				<div class="row" style="margin-left: 0;">
+					<div class="col-md-3 well">
+						<ul class="nav nav-pills nav-stacked">
+							<li class="active"><a href="#">Personal Info<span
+									class='pull-right fa fa-chevron-right' style="margin-top: 4px;"></span>
+							</a></li>
+							<li><a href="#">Educational Info<span
+									class='pull-right fa fa-chevron-right' style="margin-top: 4px;"></span>
+							</a></li>
+							<li><a href="#">Messages<span
+									class='pull-right fa fa-chevron-right' style="margin-top: 4px;"></span>
+							</a></li>
+						</ul>
+
+					</div>
+					<div class="col-md-9 well" style="margin-left: 10px; width: 73%;">
+						<div class="step-pane" id="step3">
+							<form class="form-horizontal">
+
+								<div class="form-group has-success">
+									<strong><p>Personal Information</p> </strong>
+									<div>
+										<span class="col-md-6"> Mr: <input type="checkbox"
+											class="checkbox" /> Ms:<input type="checkbox"
+											class="checkbox" checked="checked" />Mrs: <input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+										<span class="col-md-6"> Single: <input type="checkbox"
+											class="checkbox" /> Married:<input type="checkbox"
+											class="checkbox" checked="checked" /> Married:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+									</div>
+									<br>
+									<div>
+										<label class="control-label" for="inputSuccess">First Name</label>
+										<div class="controls row">
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="inputSuccess">
+											</div>
+											<span class="help-block col-sm-8">
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"
+															class="fa pull-right"></i> Edit</a>
+													</li>
+												</ul> </span>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">Last Name</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+								</div>
+
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">Surname</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+
+													<span><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+														</li> </span>
+												</ul> </span> </span>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">Email</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+
+													<span><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+														</li> </span>
+												</ul> </span> </span>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">Phone Number</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+
+													<span><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+														</li> </span>
+												</ul> </span> </span>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">Country</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+
+													<span><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+														</li> </span>
+												</ul> </span> </span>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">City</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+
+													<span><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+														</li> </span>
+												</ul> </span> </span>
+									</div>
+								</div>
+								<hr>
+								<div class="form-group has-success">
+									<strong><p>Social Networking</p> </strong> <label
+										class="control-label" for="inputSuccess">Facebook</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">Twitter</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">Linkedin</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">Blog</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">Skype</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="control-label" for="inputSuccess">Other</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+								</div>
+
+								<div class="form-group has-success">
+									<strong><p>Organizational Affiliation</p> </strong>
+									<div>
+										<h5>Professional Membership(s):</h5>
+										<span class="col-md-6"> ACSA- ICT Professionals Association: <input
+											type="checkbox" class="checkbox" /> Open Source Afghanistan:<input
+											type="checkbox" class="checkbox" checked="checked" />Other: <input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+										<span class="col-md-6"> Single: <input type="checkbox"
+											class="checkbox" /> Married:<input type="checkbox"
+											class="checkbox" checked="checked" /> Married:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+									</div>
+									<h5>Supervisor Information</h5>
+									<label class="control-label" for="inputSuccess">Name</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+									<label class="control-label" for="inputSuccess">Phone Number</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+									<label class="control-label" for="inputSuccess">Email Adress</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+									<h5>Official Address:</h5>
+									<label class="control-label" for="inputSuccess">Country</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+									<label class="control-label" for="inputSuccess">City</label>
+									<div class="controls row">
+										<div class="col-sm-4">
+											<input type="text" class="form-control" id="inputSuccess">
+										</div>
+										<span class="help-block col-sm-8"><span>
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+													</li>
+												</ul> </span> </span>
+									</div>
+									<div>
+										<h5>Nature of the organization:</h5>
+										<span class="col-md-6"> Government: <input type="checkbox"
+											class="checkbox" /> Private Sector:<input type="checkbox"
+											class="checkbox" checked="checked" />Civil Society: <input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+										<span class="col-md-6"> Academia: <input type="checkbox"
+											class="checkbox" />Inter governmental:<input type="checkbox"
+											class="checkbox" checked="checked" /> Other:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+									</div>
+
+								</div>
+								<hr>
+
+								<div class="form-group has-success">
+									<strong><p>Educational Information</p> </strong>
+
+
+									<div>
+										<label class="control-label" for="inputSuccess">College/
+											university, country:</label>
+										<div class="controls row">
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="inputSuccess">
+											</div>
+											<span class="help-block col-sm-8">
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"
+															class="fa pull-right"></i> Edit</a>
+													</li>
+												</ul> </span>
+										</div>
+										<label class="control-label" for="inputSuccess">Faculty
+											/Concentration:</label>
+										<div class="controls row">
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="inputSuccess">
+											</div>
+											<span class="help-block col-sm-8">
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"
+															class="fa pull-right"></i> Edit</a>
+													</li>
+												</ul> </span>
+										</div>
+										<label class="control-label" for="inputSuccess">Degree
+											awarded/ working toward:</label>
+										<div class="controls row">
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="inputSuccess">
+											</div>
+											<span class="help-block col-sm-8">
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"
+															class="fa pull-right"></i> Edit</a>
+													</li>
+												</ul> </span>
+										</div>
+										<label class="control-label" for="inputSuccess"> Number of
+											semesters completed:</label>
+										<div class="controls row">
+											<div class="col-sm-4">
+												<input type="text" class="form-control" id="inputSuccess">
+											</div>
+											<span class="help-block col-sm-8">
+												<ul class="nav nav-pills nav-stacked">
+													<li><a href="#"><i class="fa fa-pencil fa-fw"
+															class="fa pull-right"></i> Edit</a>
+													</li>
+												</ul> </span>
+										</div>
+										<div class="form-group has-success">
+											<label class="control-label" for="inputSuccess">Graduation
+												date/ anticipated date</label>
+											<div class="controls row">
+												<div class="col-sm-4">
+													<input type="text" class="form-control" id="inputSuccess">
+												</div>
+												<span class="help-block col-sm-8"><span>
+														<ul class="nav nav-pills nav-stacked">
+															<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+															</li>
+														</ul> </span> </span>
+											</div>
+										</div>
+										<div class="form-group has-success">
+											<label class="control-label" for="inputSuccess"> Number of
+												credit hours completed</label>
+											<div class="controls row">
+												<div class="col-sm-4">
+													<input type="text" class="form-control" id="inputSuccess">
+												</div>
+												<span class="help-block col-sm-8"><span>
+														<ul class="nav nav-pills nav-stacked">
+															<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+															</li>
+														</ul> </span> </span>
+											</div>
+										</div>
+										<div class="form-group has-success">
+											<label class="control-label" for="inputSuccess">Grade Point
+												Average</label>
+											<div class="controls row">
+												<div class="col-sm-4">
+													<input type="text" class="form-control" id="inputSuccess">
+												</div>
+												<span class="help-block col-sm-8"><span>
+														<ul class="nav nav-pills nav-stacked">
+															<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+															</li>
+														</ul> </span> </span>
+											</div>
+										</div>
+										<div class="form-group has-success">
+											<label class="control-label" for="inputSuccess">List your
+												achievements in academic area</label>
+											<div class="controls row">
+												<div class="col-sm-4">
+													<input type="text" class="form-control" id="inputSuccess">
+												</div>
+												<span class="help-block col-sm-8"><span>
+														<ul class="nav nav-pills nav-stacked">
+															<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+															</li>
+														</ul> </span> </span>
+											</div>
+										</div>
+										<div class="form-group has-success">
+											<label class="control-label" for="inputSuccess">Certification</label>
+											<div class="controls row">
+												<div class="col-sm-4">
+													<input type="text" class="form-control" id="inputSuccess">
+												</div>
+												<span class="help-block col-sm-8"><span>
+														<ul class="nav nav-pills nav-stacked">
+															<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+															</li>
+														</ul> </span> </span>
+											</div>
+										</div>
+										<hr>
+
+										<strong><p>Work Experience</p> </strong>
+
+
+										<div class="form-group has-success">
+											<label class="control-label" for="inputSuccess">Work
+												experience with national, regional or international
+												organizations:</label>
+											<div class="controls row">
+												<div class="col-sm-4">
+													<input type="text" class="form-control" id="inputSuccess">
+												</div>
+												<span class="help-block col-sm-8"><span>
+														<ul class="nav nav-pills nav-stacked">
+															<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+															</li>
+														</ul> </span> </span>
+											</div>
+										</div>
+										<hr>
+										<strong><p>Skills</p> </strong>
+										<div class="form-group has-success">
+											<label class="control-label" for="inputSuccess">IT/ICT
+												Skills:</label>
+											<div class="controls row">
+												<div class="col-sm-4">
+													<input type="text" class="form-control" id="inputSuccess">
+												</div>
+												<span class="help-block col-sm-8"><span>
+														<ul class="nav nav-pills nav-stacked">
+															<li><a href="#"><i class="fa fa-pencil fa-fw"></i> Edit</a>
+															</li>
+														</ul> </span> </span>
+											</div>
+											<h5>
+												<strong>Language Skills:</strong>
+											</h5>
+											<div>
+
+												<span class="col-md-6">
+													<h4><strong>English:</strong></h4> Read: <input type="checkbox"
+													class="checkbox" /> Write:<input type="checkbox"
+													class="checkbox" checked="checked" />Speak: <input
+													type="checkbox" class="checkbox" checked="checked" /> </span>
+
+												<span class="col-md-6">
+													<h4><strong>Pashto:</strong></h4> Read: <input type="checkbox"
+													class="checkbox" /> Write:<input type="checkbox"
+													class="checkbox" checked="checked" /> Speak:<input
+													type="checkbox" class="checkbox" checked="checked" /> </span>
+												<span class="col-md-6">
+													<h4><strong>Dari:</strong></h4> Read: <input type="checkbox"
+													class="checkbox" /> Write:<input type="checkbox"
+													class="checkbox" checked="checked" />Speak: <input
+													type="checkbox" class="checkbox" checked="checked" /> </span>
+
+												<span class="col-md-6">
+													<h4><strong>Uzbeki:</strong></h4> Read: <input type="checkbox"
+													class="checkbox" /> Write:<input type="checkbox"
+													class="checkbox" checked="checked" /> Speak:<input
+													type="checkbox" class="checkbox" checked="checked" /> </span><span
+													class="col-md-6">
+													<h4><strong>Balochi:</strong></h4> Read: <input type="checkbox"
+													class="checkbox" /> Write:<input type="checkbox"
+													class="checkbox" checked="checked" /> Speak:<input
+													type="checkbox" class="checkbox" checked="checked" /> </span>
+													
+													<span class="col-md-6"> <h4><strong>Nooristani:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											
+											<span class="col-md-6"> <h4><strong>Arabic:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											
+											<span class="col-md-6"> <h4><strong>Turkmeni:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											
+											<span class="col-md-6"> <h4><strong>Russia:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											
+											<span class="col-md-6"> <h4><strong>Chines:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											
+											<span class="col-md-6"> <h4><strong>French:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											
+											<span class="col-md-6"> <h4><strong>Spanish:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											
+											<span class="col-md-6"> <h4><strong>German:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											
+											<span class="col-md-6"> <h4><strong>Hindi:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											
+											<span class="col-md-6"> <h4><strong>Urdu:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											
+											<span class="col-md-6"> <h4><strong>Other:</strong></h4> Read: <input type="checkbox"
+											class="checkbox" /> Write:<input type="checkbox"
+											class="checkbox" checked="checked" /> Speak:<input
+											type="checkbox" class="checkbox" checked="checked" /> </span>
+											</div>
+										</div>
+									</div>
+								</div>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end: Main Menu -->
+
+		<div class="clearfix"></div>
+		<footer>
+			<p>
+				<span style="text-align: left; float: right">&copy; 2014 <a
+					target="_blank" href="http://technation.af">TechNation</a>. All
+					rights reserved. </span>
+			</p>
+
+		</footer>
+
+		<!-- start: JavaScript-->
+		<!--[if !IE]>-->
+		<!-- start: JavaScript-->
+		<!--[if !IE]>-->
+
+
+		<script src="../assets/js/jquery-2.0.3.min.js"></script>
+
+		<!--<![endif]-->
+
+		<!--[if IE]>
+	
+		<script src="assets/js/jquery-1.10.2.min.js"></script>
+	
+	<![endif]-->
+
+		<!--[if !IE]>-->
+
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='../assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+			</script>
+
+		<!--<![endif]-->
+
+		<!--[if IE]>
+	
+		<script type="text/javascript">
+	 	window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+		</script>
+		
+	<![endif]-->
+		<script src="../assets/js/jquery-migrate-1.2.1.min.js"></script>
+
+
+
+
+		<!-- page scripts -->
+		<script src="../assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="../http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+		<script src="../assets/js/jquery.timepicker.js"></script>
+		<script src="../assets/js/myscript.js"></script>
+
+		<script
+			src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.0.1-p7/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../assets/js/jquery.noty.min.js"></script>
+		<!-- theme scripts -->
+		<script src="../assets/js/custom.min.js"></script>
+		<script src="../assets/js/core.min.js"></script>
+
+		<script type="text/javascript">
+		$(function(){
+			<?php if(isset($_GET['addCourse']) && $_GET['addCourse']=="success") { ?>
+				$("#addCourseSuccess").click();
+			<?php
+			} else {
+				echo "HELLO";
+			}
+			?>
+		
+		});
+	</script>
+		<script type="text/javascript" src="../assets/js/holder.js"></script>
+
+</body>
+</html>

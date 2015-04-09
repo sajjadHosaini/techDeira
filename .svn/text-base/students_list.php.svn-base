@@ -1,0 +1,21 @@
+<?php
+require_once('inc/config.inc');
+$link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
+if(!$link) {
+	die('Failed to connect to server: ' . mysql_error());
+}
+$sql=mysql_select_db(DB_DATABASE);
+if($sql){
+	$qry = mysql_query("SELECT * FROM trainee_abade order by id");
+	if($qry){
+		echo "<table border='1'>";
+		echo "<tr><td>Surname</td><td>First Name</td><td>DoB</td><td>Gender</td><td>Phone Cell</td><td>Email Address</td></tr>";
+		while($row=mysql_fetch_array($qry)){
+			echo "<tr><td>".$row['surname'] ."</td><td>".$row['firstname'] ."</td><td>".$row['dob'] ."</td><td>".$row['gender'] ."</td><td>".$row['phone-cell'] ."</td><td>".$row['emailadd'] ."</td></tr>";
+		}
+		echo "</table>";
+	}
+	else {
+		echo mysql_error();
+	}
+}

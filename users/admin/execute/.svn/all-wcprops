@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/51/trunk/users/instructor/execute
+END
+deleteCourse.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/47/trunk/users/instructor/execute/deleteCourse.php
+END
+addMaterial.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/47/trunk/users/instructor/execute/addMaterial.php
+END
+addCourse.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/40/trunk/users/instructor/execute/addCourse.php
+END
+addLecture.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/47/trunk/users/instructor/execute/addLecture.php
+END
+courseInfoLoad.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/47/trunk/users/instructor/execute/courseInfoLoad.php
+END
+deleteMaterial.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/51/trunk/users/instructor/execute/deleteMaterial.php
+END
+deleteLecture.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/46/trunk/users/instructor/execute/deleteLecture.php
+END
+editCourse.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/47/trunk/users/instructor/execute/editCourse.php
+END
