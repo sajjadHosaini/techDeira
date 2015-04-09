@@ -1,0 +1,161 @@
+$(function() {
+	
+	$("#lectureDate").datepicker({
+		defaultDate : "+1w",
+		dateFormat : "yy-mm-dd",
+	});
+
+	$(".dateFrom").datepicker({
+		defaultDate : "+1w",
+		changeMonth : true,
+		numberOfMonths : 1,
+		dateFormat : "yy-mm-dd",
+		onClose : function(selectedDate) {
+			$(".dateTo").datepicker("option", "minDate", selectedDate);
+		}
+	});
+	$(".dateTo").datepicker({
+		defaultDate : "+1w",
+		changeMonth : true,
+		numberOfMonths : 1,
+		dateFormat : "yy-mm-dd",
+		onClose : function(selectedDate) {
+			$(".dateFrom").datepicker("option", "maxDate", selectedDate);
+		}
+	});
+
+	$('.timeFrom').timepicker({
+		'minTime' : '6:00am',
+		'maxTime' : '8:30pm'
+	});
+	$('.timeTo').timepicker({
+		'minTime' : '6:00am',
+		'maxTime' : '8:30pm'
+	});
+
+	// Delete Course Modal
+	$(".deleteCourse").on("click", function() {
+		var id = $(this).attr("name");
+		$("#deleteCourseModal").modal();
+		$(".acceptDeleteCourse").on("click", function() {
+			$.ajax({
+				type : "GET",
+				url : "execute/deleteCourse.php",
+				data : "id=" + id,
+				cache : false,
+				success : function(html) {
+					$("#deleteCourseSuccess").click();
+					$("#deleteCourseModal").modal('hide');
+					window.location.href = "courses.php";
+				}
+			});
+		});
+	});
+
+	// Delete Lecture Modal
+	$(".deleteLecture").on("click", function() {
+		var id = $(this).attr("name");
+		$("#deleteLectureModal").modal();
+		$(".acceptDeleteLecture").on("click", function() {
+			$.ajax({
+				type : "GET",
+				url : "execute/deleteLecture.php",
+				data : "id=" + id,
+				cache : false,
+				success : function(html) {
+					if(html==""){
+						$("#deleteLectureSuccess").click();
+						$("#deleteLectureModal").modal('hide');
+						$(".ltr" + id).hide();
+					}
+					else{
+						alert(html);
+					}
+				}
+			});
+		});
+	});
+
+	// Delete Material Modal
+	$(".deleteMaterial").on("click", function() {
+		var id = $(this).attr("name");
+		$("#deleteMaterialModal").modal();
+		$(".acceptDeleteMaterial").on("click", function() {
+			$.ajax({
+				type : "GET",
+				url : "execute/deleteMaterial.php",
+				data : "id=" + id,
+				cache : false,
+				success : function(html) {
+					if(html==""){
+						$("#deleteMaterialSuccess").click();
+						$("#deleteMaterialModal").modal('hide');
+						$(".mtr" + id).hide();
+					}
+					else{
+						alert(html);
+					}
+				}
+			});
+		});
+	});
+
+	// Course Lecture Adding
+
+	// Callback handler for form submit event
+	$("#lectureForm").submit(function(e) {
+
+		var formObj = $(this);
+		var formURL = formObj.attr("action");
+		var formData = new FormData(this);
+		$.ajax({
+			url : formURL,
+			type : 'POST',
+			data : formData,
+			mimeType : "multipart/form-data",
+			contentType : false,
+			cache : false,
+			processData : false,
+			success : function(data, textStatus, jqXHR) {
+				$("#addLectureSuccess").click();
+				if(data!=""){
+				alert(data);
+				}
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert("Lecture not added, error: " + errorThrown);
+			}
+		});
+		e.preventDefault(); // Prevent Default action.
+		e.unbind();
+	});
+
+	$("#materialForm").submit(function(e) {
+
+		var formObj = $(this);
+		var formURL = formObj.attr("action");
+		var formData = new FormData(this);
+		$.ajax({
+			url : formURL,
+			type : 'POST',
+			data : formData,
+			mimeType : "multipart/form-data",
+			contentType : false,
+			cache : false,
+			processData : false,
+			success : function(data, textStatus, jqXHR) {
+				$("#addCourseSuccess").click();
+				if(data!=""){
+				alert(data);
+				}
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert("Material not added, error: " + errorThrown);
+			}
+		});
+		e.preventDefault(); // Prevent Default action.
+		e.unbind();
+	});
+
+	// END - Course Lecture Adding
+});
